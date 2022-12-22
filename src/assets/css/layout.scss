@@ -1,0 +1,48 @@
+/*
+  * Layout style
+*/
+
+.page {
+  position: fixed;
+  top: 4.8rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.header {
+  position: fixed;
+  height: 4.8rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(93.5deg, #F8124B 18.71%, #FE2C2D 83.26%);
+}
+
+.page-panel {
+  width: 92vw;
+  padding: 0 4vw;
+}
+
+.flex-column {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  .col-item {
+    width: 100%;
+    margin: 0 1rem 0 0;
+    padding: 0 0 0 1rem;
+    .d,.t {
+      width: auto;
+      text-align: center;
+    }
+  }
+  .col-item:last-of-type {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
