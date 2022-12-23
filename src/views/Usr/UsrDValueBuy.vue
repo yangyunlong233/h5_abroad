@@ -1,8 +1,8 @@
 <template>
-  <div id="UsrDValueBro" class="page">
+  <div id="UsrDValueBuy" class="page">
 
     <Header back="true">
-      <template v-slot:title>D瓜质押借款</template>
+      <template v-slot:title>D瓜回购</template>
       <template v-slot:tool>
         <a class="header-tool" href="/">借款记录</a>
       </template>
@@ -29,17 +29,13 @@
         <p>实际到账：0.00 元（入账至余额）</p>
       </div>
       <div class="page-panel agree-panel">
-        <input type="radio" id="Agree" @click="agree_handle">
-        <i v-show="agree"><img src="../../assets/images/icon_checked_green.svg"></i>
-        <label for="Agree">质押投借款协议</label>
         <div class="button-large">确认提交</div>
       </div>
       <div class="page-panel info">
         <p>D瓜回购注意事项：</p>
-        <p>1.最低借款100元起没借款金额为质押股当日价格的50%；</p>
-        <p>2.还款成功后质押数量实时到达D瓜余额账户；</p>
-        <p>3.借款费率为6%，最长还款时间为365天，到期未还，视为强制回购；</p>
-        <p>4.计算时间为 6:00 到 24:00。</p>
+        <p>1.最低回购100元，回购消耗率50%；</p>
+        <p>2.回购成功后实时到达余额账户；</p>
+        <p>3.回购时间为6:00至24:00。</p>
       </div>
     </div>
 
@@ -49,7 +45,7 @@
 <script>
 import Header from '../../components/Header.vue'
 export default {
-  name: 'UsrDValueBro',
+  name: 'UsrDValueBuy',
   data () {
     return {
       agree: false

@@ -14,14 +14,29 @@ const routes = [
     component: LoginDefault
   },
   {
-    path: '/d',
+    path: '/d', // D瓜
     name: 'UsrDValue',
     component: () => import('../views/Usr/UsrDValue.vue')
   },
   {
-    path: '/dbro',
+    path: '/d_bro', // 质押
     name: 'UsrDValueBro',
     component: () => import('../views/Usr/UsrDValueBro.vue')
+  },
+  {
+    path: '/d_buy', // 回购
+    name: 'UsrDValueBuy',
+    component: () => import('../views/Usr/UsrDValueBuy.vue')
+  },
+  {
+    path: '/d_force_buy', // 强制回购
+    name: 'UsrDValueForceBuy',
+    component: () => import('../views/Usr/UsrDValueForceBuy.vue')
+  },
+  {
+    path: '/d_logs', // 账单
+    name: 'UsrDValueLogs',
+    component: () => import('../views/Usr/UsrDValueLogs.vue')
   },
   {
     path: '/404',
