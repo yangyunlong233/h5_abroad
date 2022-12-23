@@ -14,6 +14,16 @@ const routes = [
     component: LoginDefault
   },
   {
+    path: '/d',
+    name: 'UsrDValue',
+    component: () => import('../views/Usr/UsrDValue.vue')
+  },
+  {
+    path: '/dbro',
+    name: 'UsrDValueBro',
+    component: () => import('../views/Usr/UsrDValueBro.vue')
+  },
+  {
     path: '/404',
     name: 'NotFound',
     component: () => import('../views/NotFound/NotFound.vue')

@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="back"><img src="../assets/images/icon_header_back.svg"></div>
-    <h1>标题</h1>
+    <h1><slot name="title"></slot></h1>
     <div class="tool">
       <slot name="tool"></slot>
     </div>

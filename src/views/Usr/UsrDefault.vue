@@ -1,8 +1,9 @@
 <template>
   <div id="UsrDefault" class="page">
 
-    <div class="header"></div>
-    <Header back="true"></Header>
+    <Header back="true">
+      <template v-slot:title>贡献值</template>
+    </Header>
 
     <div class="page-cont">
 
@@ -130,7 +131,9 @@
 
     </div>
 
-    <RulesDialog :rulesDialog="rulesDialog" @changeDialog="changeDialog"></RulesDialog>
+    <RulesDialog :rulesDialog="rulesDialog" @changeDialog="changeDialog">
+      <template v-slot:title>贡献值规则</template>
+    </RulesDialog>
 
   </div>
 </template>

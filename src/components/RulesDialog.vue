@@ -3,7 +3,9 @@
     <div class="rules-dialog" v-if="rulesDialog">
       <div class="mask" style="opacity: .6"></div>
       <div class="container" key="2222">
-        <h2>贡献值规则</h2>
+        <h2>
+          <slot name="title"></slot>
+        </h2>
         <button @click="changeDialog"><img src="../assets/images/icon_dialog_close.svg"></button>
         <div class="cont">
           <p>一、什么是贡献值?</p>
