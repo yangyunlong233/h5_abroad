@@ -25,7 +25,7 @@
       <div class="page-panel my-panel">
         <img src="../../assets/images/bg_usr_my_panel.png">
         <h2>我的贡献值</h2>
-        <div class="rule-button" @click="()=>{this.rulesDialog=!this.rulesDialog}">贡献值规则</div>
+        <div class="rule-button" @click="changeDialog">贡献值规则</div>
         <div class="flex-column">
           <div class="col-item">
             <div class="t">今日结算(点)</div>
@@ -131,8 +131,8 @@
 
     </div>
 
-    <RulesDialog :rulesDialog="rulesDialog" @changeDialog="changeDialog">
-      <template v-slot:title>贡献值规则</template>
+    <RulesDialog :ruleDialogShow="ruleDialogShow" @changeDialog="changeDialog">
+      <template v-slot:title>D瓜规则</template>
     </RulesDialog>
 
   </div>
@@ -144,20 +144,21 @@ import Header from '../../components/Header.vue'
 import RulesDialog from '../../components/RulesDialog.vue'
 export default {
   name: 'UsrDefault',
-  data () {
-    return {
-    }
-  },
   components: {
     Header,
     RulesDialog
   },
   setup () {
-    const rulesDialog = ref(false)
-    const changeDialog = (val) => {
-      rulesDialog.value = val.data
+    const ruleDialogShow = ref(false)
+
+    const changeDialog = () => {
+      ruleDialogShow.value = !ruleDialogShow.value
     }
-    return { rulesDialog, changeDialog }
+
+    return {
+      changeDialog,
+      ruleDialogShow
+    }
   }
 }
 </script>
@@ -216,5 +217,4 @@ export default {
     }
   }
 }
-
 </style>

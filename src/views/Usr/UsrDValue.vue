@@ -9,7 +9,7 @@
 
       <div class="page-panel theme-bg my-panel">
         <h2>我的D瓜</h2>
-        <div class="rule-button" @click="()=>{this.rulesDialog=!this.rulesDialog}">D瓜规则</div>
+        <div class="rule-button" @click="changeDialog">D瓜规则</div>
         <div class="flex-column">
           <div class="col-item">
             <div class="t">余额总价值(元)</div>
@@ -96,8 +96,8 @@
 
     </div>
 
-    <RulesDialog :rulesDialog="rulesDialog" @changeDialog="changeDialog">
-      <template v-slot:title>D瓜规则</template>
+    <RulesDialog :ruleDialogShow="ruleDialogShow" @changeDialog="changeDialog">
+      <template v-slot:title>贡献值规则</template>
     </RulesDialog>
 
   </div>
@@ -116,11 +116,16 @@ export default {
     RulesDialog
   },
   setup () {
-    const rulesDialog = ref(false)
-    const changeDialog = (val) => {
-      rulesDialog.value = val.data
+    const ruleDialogShow = ref(false)
+
+    const changeDialog = () => {
+      ruleDialogShow.value = !ruleDialogShow.value
     }
-    return { rulesDialog, changeDialog }
+
+    return {
+      changeDialog,
+      ruleDialogShow
+    }
   }
 }
 </script>

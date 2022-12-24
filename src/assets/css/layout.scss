@@ -191,3 +191,40 @@
   box-shadow: 0px 4px 8px rgba(254, 43, 47, 0.3);
   border-radius: 5rem;
 }
+
+// form
+.form-el {
+  display: table;
+  width: calc(100% - 6rem);
+  height: 3.6rem;
+  line-height: 3.6rem;
+  margin: 1rem 3rem 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(#000, .1);
+  .item {
+    display: table-cell;
+    input {
+      width: 100%;
+      height: 3.6rem;
+      line-height: 3.6rem;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      font-size: 1.8rem;
+      letter-spacing: .3rem;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+    }
+  }
+  .tel {
+    font-size: 1.8rem;
+    border-right: 1px solid rgba(#000, .1);
+    color: #666;
+    padding-right: .5rem;
+  }
+  .code {
+    font-size: 1.4rem;
+    color: #E63C39;
+    white-space: nowrap;
+  }
+}

@@ -1,8 +1,8 @@
 <template>
   <transition-group name="fade" tag="div">
-    <div class="rules-dialog" v-if="rulesDialog">
+    <div class="rules-dialog" v-show="ruleDialogShow" key="box1">
       <div class="mask" style="opacity: .6"></div>
-      <div class="container" key="2222">
+      <div class="container">
         <h2>
           <slot name="title"></slot>
         </h2>
@@ -41,20 +41,20 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+// import { ref } from 'vue'
 export default {
   name: 'CpRulesDialog',
-  props: ['rulesDialog'],
-  setup (props, { emit }) {
-    const isDialog = ref(props.rulesDialog)
-    const changeDialog = () => {
-      isDialog.value = false
-      emit('changeDialog', { data: isDialog.value })
-    }
-    return { isDialog, changeDialog }
+  props: {
+    ruleDialogShow: Boolean
   },
-  mounted () {
-    // console.log(this.rulesDialog)
+  setup (props, context) {
+    const changeDialog = () => {
+      context.emit('changeDialog')
+    }
+
+    return {
+      changeDialog
+    }
   }
 }
 </script>
