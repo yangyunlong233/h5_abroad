@@ -1,43 +1,47 @@
 <template>
   <div id="LoginDefault" class="page">
 
-    <div class="logo">
-      <img src="../../assets/images/login_logo.png">
-    </div>
+    <Header back="true">
+      <template v-slot:title>修改交易密码</template>
+    </Header>
 
-    <div class="page-panel">
-      <div class="form-el">
-        <div class="item tel d">+86</div>
-        <div class="item"><input class="d" type="number" v-model="mobile" placeholder="手机号"></div>
-      </div>
-      <div class="form-el">
-        <div class="item"><input class="d" type="number" placeholder="验证码" v-model="smsCode"></div>
-        <div class="item code" @click="beforeSms">{{ smsMsg }}<span v-show="timer != 0">{{ timer }}</span></div>
-      </div>
-    </div>
-    <div class="page-panel agree-panel">
-      <input type="radio" id="Agree" @click="agreeHandle">
-      <i v-show="agree"><img src="../../assets/images/icon_checked_green.svg"></i>
-      <label for="Agree">已阅读并同意<span>《用户协议》</span>与<span>《隐私政策》</span></label>
-      <div class="button-large" @click="loginSubmit">登录</div>
-    </div>
+    <div class="page-cont">
 
-    <transition-group name="fade" tag="div">
-      <div class="verify-panel" v-show="verifyPanelShow" key="box1">
-        <div class="tool">
-          <i class="refresh" @click="refreshVerify"><img src="../../assets/images/icon_verify_panel_refresh.svg"></i>
-          <i class="close" @click="closeVerify"><img src="../../assets/images/icon_verify_panel_close.svg"></i>
+      <div class="page-panel">
+        <div class="form-el">
+          <div class="item tel d">+86</div>
+          <div class="item"><input class="d" type="number" v-model="mobile" placeholder="手机号"></div>
         </div>
-        <div class="verify-container">
-          <div id="verifyImage" class="verify-image" :style="{backgroundImage: urlBase64}"></div>
-          <div class="verify-words">依次点击：<span>{{ wordsShow }}</span></div>
+        <div class="form-el">
+          <div class="item"><input class="d" type="password" placeholder="设置交易密码" v-model="setPwd"></div>
+        </div>
+        <div class="form-el">
+          <div class="item"><input class="d" type="number" placeholder="验证码" v-model="smsCode"></div>
+          <div class="item code" @click="beforeSms">{{ smsMsg }}<span v-show="timer != 0">{{ timer }}</span></div>
         </div>
       </div>
-  </transition-group>
+      <div class="page-panel agree-panel">
+        <div class="button-large" @click="loginSubmit">提交</div>
+      </div>
 
-  <transition name="fade" tag="div">
-    <div id="msg" class="msg" v-show="msg != ''">{{ msg }}</div>
-  </transition>
+      <transition-group name="fade" tag="div">
+        <div class="verify-panel" v-show="verifyPanelShow" key="box1">
+          <div class="tool">
+            <i class="refresh" @click="refreshVerify"><img src="../../assets/images/icon_verify_panel_refresh.svg"></i>
+            <i class="close" @click="closeVerify"><img src="../../assets/images/icon_verify_panel_close.svg"></i>
+          </div>
+          <div class="verify-container">
+            <div id="verifyImage" class="verify-image" :style="{ backgroundImage: urlBase64 }"></div>
+            <div class="verify-words">依次点击：<span>{{ wordsShow }}</span></div>
+          </div>
+        </div>
+      </transition-group>
+
+    </div>
+
+    <transition name="fade" tag="div">
+      <div id="msg" class="msg" v-show="msg != ''">{{ msg }}</div>
+    </transition>
 
   </div>
 </template>
@@ -45,16 +49,19 @@
 <script>
 import { ref, getCurrentInstance, onMounted } from 'vue'
 import CryptoJS from 'crypto-js'
+import Header from '@/components/Header.vue'
 export default {
   name: 'LoginDefault',
+  components: {
+    Header
+  },
   setup () {
-    const agree = ref(false)
-    const agreeHandle = () => {
-      agree.value = true
-    }
-
     const currentInstance = getCurrentInstance()
     const { $axios, $router } = currentInstance.appContext.config.globalProperties
+
+    // 获取存储的token
+    const accessToken = ref(localStorage.getItem('access_token'))
+    const unLogin = ref(false)
 
     const msg = ref('')
 
@@ -73,6 +80,7 @@ export default {
     const timer = ref(0) // 发送短信倒计时
     const mobile = ref('') // 手机号
     const smsCode = ref('') // 短信验证码
+    const setPwd = ref('') // 设置密码
 
     // 获取短信验证码 ***
     const beforeSms = () => {
@@ -102,6 +110,14 @@ export default {
         }
       })
         .then(response => {
+          // console.log('获取验证码响应', response.data.status)
+          if (response.data.status !== 200) {
+            unLogin.value = true
+            setTimeout(() => {
+              $router.push('/login')
+            }, 2000)
+            return
+          }
           // 显示验证码图片
           urlBase64.value = `url(data:image/png;base64,${response.data.data.originalImage})`
           // 显示要点的词
@@ -120,8 +136,8 @@ export default {
       point.value = verifySecretKey.value
         ? aesEncrypt(JSON.stringify(userClickPonits.value), verifySecretKey.value)
         : JSON.stringify(userClickPonits.value)
-      console.log('point', point.value)
-      console.log('key', verifySecretKey.value)
+      // console.log('point', point.value)
+      // console.log('key', verifySecretKey.value)
       $axios.post('/api/captcha/check',
         {
           id: 2,
@@ -168,7 +184,7 @@ export default {
     function sendSms (captchaVerification) {
       $axios.post('/api/send/sms',
         {
-          behavior: 5,
+          behavior: 3,
           key: captchaVerification,
           mobile: mobile.value,
           type: 2
@@ -212,36 +228,27 @@ export default {
       return encrypted.toString()
     }
 
-    // 登录
-    const usrToken = ref('')
+    // 修改密码
     const loginSubmit = () => {
-      console.log(mobile.value)
-      if (mobile.value === '' || smsCode.value === '') {
+      if (setPwd.value === '' || smsCode.value === '') {
         // 空值校验
-        msg.value = '请填写手机号或验证码'
-      } else if (agree.value === false) {
-        // 用户协议校验
-        msg.value = '请同意协议和政策'
+        msg.value = '请填写密码或验证码'
       } else {
-        $axios.post('/api/user/login/sms',
+        $axios.post('/api/user/password/trade',
           {
-            mobile: mobile.value,
-            password: '',
-            smsCode: smsCode.value
+            smsCode: smsCode.value,
+            tradePassword: setPwd.value
           }, {
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              authorization: accessToken.value
             }
           })
           .then(response => {
-            console.log('获取token', response.data.data)
+            // console.log('获取修改密码结果', response.data)
             if (response.data.status === 200) {
-              msg.value = '登录成功'
-              usrToken.value = response.data.data
-              localStorage.setItem('access_token', usrToken.value)
-              $router.push('/')
-            } else {
-              msg.value = response.data.msg
+              msg.value = '修改成功，3秒后自动跳转'
+              $router.push('/d')
             }
           })
           .catch(() => {
@@ -268,7 +275,7 @@ export default {
         nSpan.style.left = x.value + 'px'
         nSpan.style.top = y.value + 'px'
         document.querySelector('#verifyImage').appendChild(nSpan)
-        console.log(userClickPonits.value)
+        // console.log(userClickPonits.value)
         if (userClickPonits.value.length === verifyWords.value.length) {
           verifyResult()
         }
@@ -276,8 +283,6 @@ export default {
     })
 
     return {
-      agree,
-      agreeHandle,
       urlBase64,
       wordsShow,
       beforeSms,
@@ -289,7 +294,9 @@ export default {
       smsMsg,
       mobile,
       smsCode,
-      loginSubmit
+      loginSubmit,
+      setPwd,
+      unLogin
     }
   }
 }

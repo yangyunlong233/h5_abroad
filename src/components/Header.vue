@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="back"><img src="../assets/images/icon_header_back.svg"></div>
+    <div class="back" @click="backPage"><img src="../assets/images/icon_header_back.svg"></div>
     <h1><slot name="title"></slot></h1>
     <div class="tool">
       <slot name="tool"></slot>
@@ -9,8 +9,21 @@
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue'
 export default {
-  name: 'CpHeader'
+  name: 'CpHeader',
+  setup () {
+    const currentInstance = getCurrentInstance()
+    const { $router } = currentInstance.appContext.config.globalProperties
+
+    function backPage () {
+      $router.back()
+    }
+
+    return {
+      backPage
+    }
+  }
 }
 </script>
 

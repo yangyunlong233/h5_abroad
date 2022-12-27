@@ -1,24 +1,50 @@
 <template>
+  <div v-show="chartLoading" style="width: 100%; height: 30rem; position: absolute; top: 0; left: 0; z-index: 9999;">
+    <img src="../assets/images/chart_loading.gif" style="width: 100%">
+  </div>
   <div id="myEcharts" :style="{ width: '100%', height: '30rem' }">
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts'
-import { onMounted } from 'vue'
+import { ref, toRefs, watch } from 'vue'
 export default {
   name: 'CpMarketChart',
-  setup () {
+  props: {
+    xAxis: Array,
+    series: Array
+  },
+  setup (props) {
+    const chartLoading = ref(true)
+
     /// 声明定义一下echart
     const echart = echarts
 
-    onMounted(() => {
-      initChart()
-    })
+    const { xAxis } = toRefs(props)
+    const { series } = toRefs(props)
 
+    setTimeout(() => {
+      chartLoading.value = false
+      initChart(xAxis.value, series.value)
+    }, 1000)
+
+    // 监听数据改变重新change图表
+    watch(xAxis,
+      () => {
+        if (xAxis.value !== []) {
+          initChart(xAxis.value, series.value)
+        }
+      }
+    )
+
+    let chart = null
     // 基础配置一下Echarts
-    function initChart () {
-      const chart = echart.init(document.getElementById('myEcharts'))
+    function initChart (x, s) {
+      if (chart !== null && chart !== '' && chart !== undefined) {
+        chart.dispose()
+      }
+      chart = echart.init(document.getElementById('myEcharts'))
       // 把配置和数据放这里
       chart.setOption({
         title: {
@@ -54,14 +80,14 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: x
         },
         yAxis: {
           type: 'value'
         },
         series: [
           {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            data: s,
             type: 'line',
             areaStyle: {}
           }
@@ -73,7 +99,7 @@ export default {
       }
     }
 
-    return { initChart }
+    return { initChart, chartLoading }
   }
 }
 </script>

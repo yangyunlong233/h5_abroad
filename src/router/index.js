@@ -39,6 +39,21 @@ const routes = [
     component: () => import('../views/Usr/UsrDValueLogs.vue')
   },
   {
+    path: '/d_bro_logs', // 贷款记录
+    name: 'UsrDValueBroLogs',
+    component: () => import('../views/Usr/UsrDValueBroLogs.vue')
+  },
+  {
+    path: '/d_buy_logs', // 回购记录
+    name: 'UsrDValueBuyLogs',
+    component: () => import('../views/Usr/UsrDValueBuyLogs.vue')
+  },
+  {
+    path: '/set_trade_pwd', // 设置安全密码
+    name: 'SetTradePwd',
+    component: () => import('../views/Usr/SetTradePwd.vue')
+  },
+  {
     path: '/404',
     name: 'NotFound',
     component: () => import('../views/NotFound/NotFound.vue')

@@ -7,33 +7,7 @@
           <slot name="title"></slot>
         </h2>
         <button @click="changeDialog"><img src="../assets/images/icon_dialog_close.svg"></button>
-        <div class="cont">
-          <p>一、什么是贡献值?</p>
-          <p>贡献值是组织内消费资本置换的一种权益，按贡献度将所有权再分配到组织成员中，实现组织内价值全员所有。</p>
-
-          <p>二、贡献值获得方式</p>
-          <p>贡献值在买家确认收货后自动结算</p>
-          <p>1.组织内的消费行为，买家获得消费贡献值=实际商家让利金额x10;</p>
-          <p>2.商家的让利行为，商家获得让利贡献值=实际商家让利金额 x2;</p>
-          <p>3.会员推广贡献值奖励;</p>
-          <p>4.代理运营商区域运营的贡献值奖励。</p>
-
-          <p>三、贡献值作用</p>
-          <p>根据个人贡献值在平台总贡献值占比，系统每日按个人贡献值占比赠送D瓜。</p>
-          <p>每回购价值1元的股权，则消耗1贡献值，回购的股权价值=减少贡献值的数量</p>
-          <p>一、什么是贡献值?</p>
-          <p>贡献值是组织内消费资本置换的一种权益，按贡献度将所有权再分配到组织成员中，实现组织内价值全员所有。</p>
-
-          <p>二、贡献值获得方式</p>
-          <p>贡献值在买家确认收货后自动结算</p>
-          <p>1.组织内的消费行为，买家获得消费贡献值=实际商家让利金额x10;</p>
-          <p>2.商家的让利行为，商家获得让利贡献值=实际商家让利金额 x2;</p>
-          <p>3.会员推广贡献值奖励;</p>
-          <p>4.代理运营商区域运营的贡献值奖励。</p>
-
-          <p>三、贡献值作用</p>
-          <p>根据个人贡献值在平台总贡献值占比，系统每日按个人贡献值占比赠送D瓜。</p>
-          <p>每回购价值1元的股权，则消耗1贡献值，回购的股权价值=减少贡献值的数量</p>
+        <div class="cont" v-html="rule">
         </div>
       </div>
     </div>
@@ -45,12 +19,15 @@
 export default {
   name: 'CpRulesDialog',
   props: {
-    ruleDialogShow: Boolean
+    ruleDialogShow: Boolean,
+    rule: String
   },
   setup (props, context) {
     const changeDialog = () => {
       context.emit('changeDialog')
     }
+
+    // console.log(props)
 
     return {
       changeDialog
